@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>DraftRoom</title>
+  <script>
+    // GitHub Pages SPA redirect trick.
+    // When GH Pages 404s on a deep route (e.g. /draftroom/editor/uuid/),
+    // it serves this file. We store the intended path in sessionStorage,
+    // then redirect to the app root so Next.js can hydrate and route correctly.
+    var path = window.location.pathname + window.location.search + window.location.hash;
+    sessionStorage.setItem('spa_redirect', path);
+    window.location.replace('/draftroom/');
+  </script>
+</head>
+<body>Redirecting…</body>
+</html>

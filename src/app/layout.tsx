@@ -35,6 +35,16 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} ${courierPrime.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-gray-950 text-white">
+        {/* GitHub Pages SPA redirect handler — restores deep-link path after 404 redirect */}
+        <script dangerouslySetInnerHTML={{ __html: `
+          (function() {
+            var redirect = sessionStorage.getItem('spa_redirect');
+            if (redirect) {
+              sessionStorage.removeItem('spa_redirect');
+              window.history.replaceState(null, '', redirect);
+            }
+          })();
+        `}} />
         {children}
       </body>
     </html>
