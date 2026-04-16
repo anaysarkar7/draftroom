@@ -1,0 +1,751 @@
+@import "tailwindcss";
+
+:root {
+  --background: #030712;
+  --foreground: #f9fafb;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --font-screenplay: var(--font-courier-prime);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans, Arial, Helvetica, sans-serif);
+}
+
+/* ============================================================
+   SCREENPLAY EDITOR — TIPTAP STYLES
+   ============================================================ */
+
+/* ProseMirror editor root */
+.screenplay-content.ProseMirror {
+  outline: none;
+  min-height: 100%;
+  /* Reset the line-number counter at the start of each page */
+  counter-reset: screenplay-line;
+}
+
+/* Base element styles */
+.screenplay-element {
+  display: block;
+  font-family: var(--font-courier-prime, "Courier Prime", "Courier New", Courier, monospace);
+  font-size: 12pt;
+  line-height: 1.5;
+  color: #111827;
+  position: relative;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  min-height: 1.5em;
+}
+
+/* Placeholder text via Tiptap Placeholder extension */
+.screenplay-element.is-empty::before {
+  content: attr(data-placeholder);
+  pointer-events: none;
+  color: #9ca3af;
+  position: absolute;
+  top: 0;
+  left: inherit;
+  right: inherit;
+  height: 0;
+  overflow: visible;
+  white-space: nowrap;
+}
+
+/* ============================================================
+   LINE NUMBERS
+   Toggle on/off by adding/removing `show-line-numbers` class
+   on the `.screenplay-page` div. Uses CSS counters.
+   ============================================================ */
+
+/* Increment the counter for every screenplay element */
+.screenplay-page.show-line-numbers .screenplay-element {
+  counter-increment: screenplay-line;
+}
+
+/* Render the count in the left margin via ::after */
+.screenplay-page.show-line-numbers .screenplay-element::after {
+  content: counter(screenplay-line);
+  position: absolute;
+  left: -58px;
+  top: 2px;
+  width: 42px;
+  text-align: right;
+  font-size: 8.5pt;
+  font-family: var(--font-courier-prime, "Courier Prime", "Courier New", monospace);
+  color: #94a3b8;
+  pointer-events: none;
+  user-select: none;
+  line-height: 1.5;
+  font-weight: 400;
+}
+
+/* ============================================================
+   SCENE NUMBERS
+   Toggle on/off via `show-scene-numbers` class on .screenplay-page.
+   Numbers appear on both left and right margins of scene headings.
+   Uses a CSS counter so they auto-update with the document.
+   ============================================================ */
+
+/* Reset counter at the start of the page */
+.screenplay-page.show-scene-numbers {
+  counter-reset: screenplay-scene;
+}
+
+/* Increment once per scene heading */
+.screenplay-page.show-scene-numbers .screenplay-element[data-element-type="scene_heading"] {
+  counter-increment: screenplay-scene;
+}
+
+/* LEFT margin — uses ::before so it never conflicts with line-number ::after */
+.screenplay-page.show-scene-numbers .screenplay-element[data-element-type="scene_heading"]::before {
+  content: counter(screenplay-scene);
+  position: absolute;
+  right: calc(100% + 14px);   /* sits just outside the left edge of the element */
+  top: 0;
+  min-width: 28px;
+  text-align: right;
+  font-size: 9pt;
+  font-family: var(--font-courier-prime, "Courier Prime", "Courier New", monospace);
+  font-weight: 700;
+  color: #78716c;
+  pointer-events: none;
+  user-select: none;
+  line-height: 1.5;
+}
+
+/* RIGHT margin — overrides the line-number ::after for scene headings (higher specificity) */
+.screenplay-page.show-scene-numbers .screenplay-element[data-element-type="scene_heading"]::after {
+  content: counter(screenplay-scene);
+  position: absolute;
+  left: calc(100% + 14px);    /* sits just outside the right edge of the element */
+  top: 0;
+  min-width: 28px;
+  text-align: left;
+  font-size: 9pt;
+  font-family: var(--font-courier-prime, "Courier Prime", "Courier New", monospace);
+  font-weight: 700;
+  color: #78716c;
+  pointer-events: none;
+  user-select: none;
+  line-height: 1.5;
+}
+
+/* Dark-mode scene numbers */
+.screenplay-page.page-dark.show-scene-numbers .screenplay-element[data-element-type="scene_heading"]::before,
+.screenplay-page.page-dark.show-scene-numbers .screenplay-element[data-element-type="scene_heading"]::after {
+  color: #a8a29e;
+}
+
+/* ============================================================
+   ELEMENT TYPE COLORS — readable on white page
+   Mirrors the toolbar color scheme but darkened for white bg
+   ============================================================ */
+
+/* — SCENE HEADING — amber/gold: bold, underlined, uppercase */
+.screenplay-element[data-element-type="scene_heading"] {
+  color: #92400e;
+  text-transform: uppercase;
+  font-weight: 700;
+  text-decoration: underline;
+  margin-top: 2em;
+  margin-bottom: 0;
+}
+.screenplay-element[data-element-type="scene_heading"].is-empty::before {
+  font-weight: 700;
+  text-decoration: underline;
+  text-transform: uppercase;
+}
+
+/* — ACTION — near-black: the neutral narrative voice */
+.screenplay-element[data-element-type="action"] {
+  color: #1f2937;
+  margin-top: 1em;
+  margin-bottom: 0;
+}
+
+/* — CHARACTER — blue: who is speaking */
+.screenplay-element[data-element-type="character"] {
+  color: #1d4ed8;
+  text-transform: uppercase;
+  font-weight: 600;
+  padding-left: 42%;
+  margin-top: 1em;
+  margin-bottom: 0;
+}
+.screenplay-element[data-element-type="character"].is-empty::before {
+  text-transform: uppercase;
+}
+
+/* — PARENTHETICAL — violet: stage direction for the actor */
+.screenplay-element[data-element-type="parenthetical"] {
+  color: #6d28d9;
+  padding-left: 32%;
+  padding-right: 28%;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+/* — DIALOGUE — green: the spoken word */
+.screenplay-element[data-element-type="dialogue"] {
+  color: #065f46;
+  padding-left: 22%;
+  padding-right: 18%;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+/* — TRANSITION — red: editorial/cutting instruction */
+.screenplay-element[data-element-type="transition"] {
+  color: #9f1239;
+  text-align: right;
+  text-transform: uppercase;
+  font-weight: 600;
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+.screenplay-element[data-element-type="transition"].is-empty::before {
+  right: 0;
+  left: auto;
+  text-transform: uppercase;
+  text-align: right;
+}
+
+/* — SHOT — orange: camera direction */
+.screenplay-element[data-element-type="shot"] {
+  color: #c2410c;
+  text-transform: uppercase;
+  font-weight: 700;
+  margin-top: 1em;
+  margin-bottom: 0;
+}
+
+/* — ACT BREAK — teal/cyan: structural TV act markers (ACT ONE, END OF ACT TWO, COLD OPEN, TAG…) */
+.screenplay-element[data-element-type="act_break"] {
+  color: #0e7490;
+  text-align: center;
+  text-transform: uppercase;
+  font-weight: 700;
+  font-size: 12pt;
+  letter-spacing: 0.12em;
+  border-top: 2px solid #a5f3fc;
+  border-bottom: 2px solid #a5f3fc;
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+  margin-top: 2em;
+  margin-bottom: 2em;
+}
+.screenplay-element[data-element-type="act_break"].is-empty::before {
+  text-align: center;
+  text-transform: uppercase;
+  font-weight: 700;
+  left: 0;
+  right: 0;
+}
+
+/* ============================================================
+   PAGE BREAK VISUALIZATION
+   Shared page-break gradient variables (applied to all styles)
+   ============================================================ */
+
+/* Shared page-break shadow + separator, reused in every style */
+.screenplay-page {
+  background-color: white;
+}
+
+/* Plain (default) */
+.screenplay-page,
+.screenplay-page[data-page-style="plain"] {
+  background-image:
+    /* ① Top-of-page shadow — gives each page a subtle top edge */
+    repeating-linear-gradient(
+      to bottom,
+      rgba(0,0,0,.06) 0px,
+      transparent     16px,
+      transparent     1056px
+    ),
+    /* ② Bottom-of-page shadow fade */
+    repeating-linear-gradient(
+      to bottom,
+      transparent      0px,
+      transparent      1034px,
+      rgba(0,0,0,.04)  1034px,
+      rgba(0,0,0,.11)  1052px,
+      rgba(0,0,0,.13)  1056px
+    ),
+    /* ③ 4 px separator line between pages */
+    repeating-linear-gradient(
+      to bottom,
+      transparent 0px,
+      transparent 1052px,
+      #94a3b8     1052px,
+      #94a3b8     1056px
+    );
+  background-size: 100% 1056px, 100% 1056px, 100% 1056px;
+}
+
+/* Dotted — subtle dot grid */
+.screenplay-page[data-page-style="dotted"] {
+  background-image:
+    radial-gradient(circle, #c8d3df 1px, transparent 1px),
+    repeating-linear-gradient(
+      to bottom,
+      rgba(0,0,0,.06) 0px, transparent 16px, transparent 1056px
+    ),
+    repeating-linear-gradient(
+      to bottom,
+      transparent 0px, transparent 1034px,
+      rgba(0,0,0,.04) 1034px, rgba(0,0,0,.11) 1052px, rgba(0,0,0,.13) 1056px
+    ),
+    repeating-linear-gradient(
+      to bottom, transparent 0px, transparent 1052px,
+      #94a3b8 1052px, #94a3b8 1056px
+    );
+  background-size: 24px 24px, 100% 1056px, 100% 1056px, 100% 1056px;
+}
+
+/* Lined — horizontal ruled lines matching typical screenplay line height */
+.screenplay-page[data-page-style="lined"] {
+  background-image:
+    repeating-linear-gradient(
+      transparent 0px, transparent 23px,
+      #dde3ea 23px, #dde3ea 24px
+    ),
+    repeating-linear-gradient(
+      to bottom,
+      rgba(0,0,0,.06) 0px, transparent 16px, transparent 1056px
+    ),
+    repeating-linear-gradient(
+      to bottom,
+      transparent 0px, transparent 1034px,
+      rgba(0,0,0,.04) 1034px, rgba(0,0,0,.11) 1052px, rgba(0,0,0,.13) 1056px
+    ),
+    repeating-linear-gradient(
+      to bottom, transparent 0px, transparent 1052px,
+      #94a3b8 1052px, #94a3b8 1056px
+    );
+  background-size: 100% 24px, 100% 1056px, 100% 1056px, 100% 1056px;
+}
+
+/* Grid — squared notebook paper look */
+.screenplay-page[data-page-style="grid"] {
+  background-image:
+    linear-gradient(#dde3ea 1px, transparent 1px),
+    linear-gradient(90deg, #dde3ea 1px, transparent 1px),
+    repeating-linear-gradient(
+      to bottom,
+      rgba(0,0,0,.06) 0px, transparent 16px, transparent 1056px
+    ),
+    repeating-linear-gradient(
+      to bottom,
+      transparent 0px, transparent 1034px,
+      rgba(0,0,0,.04) 1034px, rgba(0,0,0,.11) 1052px, rgba(0,0,0,.13) 1056px
+    ),
+    repeating-linear-gradient(
+      to bottom, transparent 0px, transparent 1052px,
+      #94a3b8 1052px, #94a3b8 1056px
+    );
+  background-size: 100% 24px, 24px 100%, 100% 1056px, 100% 1056px, 100% 1056px;
+}
+
+/* ============================================================
+   DUAL DIALOGUE — side-by-side character/dialogue columns
+   ============================================================ */
+
+.dual-dialogue {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 8px;
+  margin-top: 1em;
+  margin-bottom: 0.5em;
+  border-top: 1px dashed #d1d5db;
+  border-bottom: 1px dashed #d1d5db;
+  padding: 6px 0;
+}
+
+.dual-col {
+  min-width: 0;
+}
+
+/* Reset indentation inside dual columns */
+.dual-col .screenplay-element[data-element-type="character"] {
+  padding-left: 0;
+  text-align: center;
+  margin-top: 0;
+}
+
+.dual-col .screenplay-element[data-element-type="dialogue"] {
+  padding-left: 0;
+  padding-right: 0;
+  margin-top: 0;
+}
+
+.dual-col .screenplay-element[data-element-type="parenthetical"] {
+  padding-left: 8%;
+  padding-right: 8%;
+  margin-top: 0;
+}
+
+/* ============================================================
+   DARK MODE (Night Writer)
+   Applied when `.page-dark` class is on .screenplay-page
+   ============================================================ */
+
+.screenplay-page.page-dark {
+  background-color: #1e1e2e !important;
+  background-image: none !important;
+}
+
+.screenplay-page.page-dark .screenplay-element {
+  color: #cdd6f4;
+}
+
+.screenplay-page.page-dark .screenplay-element[data-element-type="scene_heading"] {
+  color: #fab387;
+}
+.screenplay-page.page-dark .screenplay-element[data-element-type="action"] {
+  color: #cdd6f4;
+}
+.screenplay-page.page-dark .screenplay-element[data-element-type="character"] {
+  color: #89b4fa;
+}
+.screenplay-page.page-dark .screenplay-element[data-element-type="parenthetical"] {
+  color: #cba6f7;
+}
+.screenplay-page.page-dark .screenplay-element[data-element-type="dialogue"] {
+  color: #a6e3a1;
+}
+.screenplay-page.page-dark .screenplay-element[data-element-type="transition"] {
+  color: #f38ba8;
+}
+.screenplay-page.page-dark .screenplay-element[data-element-type="shot"] {
+  color: #fab387;
+}
+.screenplay-page.page-dark .screenplay-element[data-element-type="act_break"] {
+  color: #67e8f9;
+  border-color: #164e63;
+}
+.screenplay-page.page-dark .screenplay-element.is-empty::before {
+  color: #45475a;
+}
+.screenplay-page.page-dark .dual-dialogue {
+  border-color: #313244;
+}
+
+/* ProseMirror selection */
+.ProseMirror ::selection {
+  background: #bfdbfe;
+}
+.screenplay-page.page-dark .ProseMirror ::selection {
+  background: #313244;
+}
+
+/* ============================================================
+   INLINE COMMENTS / ANNOTATIONS
+   ============================================================ */
+
+.comment-mark {
+  border-radius: 2px;
+  padding: 1px 0;
+  cursor: pointer;
+  /* colour set via JS inline style via data attribute */
+  background-color: attr(data-comment-color, #fef08a);
+  transition: filter 0.15s;
+}
+
+.comment-mark:hover {
+  filter: brightness(0.88);
+  outline: 1.5px solid rgba(0,0,0,0.15);
+  outline-offset: 1px;
+}
+
+/* Fallback colour classes (used when attr() isn't supported) */
+[data-comment-color="#fef08a"] { background-color: #fef08a; }
+[data-comment-color="#bbf7d0"] { background-color: #bbf7d0; }
+[data-comment-color="#bfdbfe"] { background-color: #bfdbfe; }
+[data-comment-color="#fbcfe8"] { background-color: #fbcfe8; }
+[data-comment-color="#e9d5ff"] { background-color: #e9d5ff; }
+[data-comment-color="#fed7aa"] { background-color: #fed7aa; }
+[data-comment-color="#fecaca"] { background-color: #fecaca; }
+[data-comment-color="#99f6e4"] { background-color: #99f6e4; }
+
+/* Dark mode comment marks — slightly dimmed */
+.screenplay-page.page-dark .comment-mark {
+  opacity: 0.75;
+}
+
+/* ============================================================
+   FORMATTING MARKS (Bold, Italic, Underline, Strike, Color)
+   These work inside screenplay elements
+   ============================================================ */
+
+.screenplay-element strong { font-weight: 700; }
+.screenplay-element em     { font-style: italic; }
+.screenplay-element u      { text-decoration: underline; }
+.screenplay-element s      { text-decoration: line-through; }
+
+/* ============================================================
+   TITLE PAGE
+   WGA-standard title page layout — rendered before script content
+   ============================================================ */
+
+.title-page {
+  font-family: var(--font-courier-prime, "Courier Prime", "Courier New", monospace);
+  font-size: 12pt;
+  background-color: white;
+  width: 816px;
+  min-height: 1056px;
+  padding: 96px;                /* 1-inch margins all around */
+  padding-left: 144px;          /* 1.5-inch left margin (WGA standard) */
+  position: relative;
+  box-sizing: border-box;
+  margin-bottom: 0;
+  color: #111827;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+}
+
+.title-page-dark {
+  background-color: #1e1e2e !important;
+  color: #cdd6f4 !important;
+}
+
+.title-page__center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 480px; /* roughly 45% down from top */
+  text-align: center;
+}
+
+.title-page__title {
+  font-size: 14pt;
+  font-weight: 700;
+  text-transform: uppercase;
+  text-decoration: underline;
+  letter-spacing: 0.05em;
+  margin-bottom: 1.5em;
+  line-height: 1.4;
+  min-height: 1.4em;
+  width: 100%;
+  text-align: center;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: inherit;
+  font-family: inherit;
+  resize: none;
+  cursor: text;
+}
+
+.title-page__title:focus {
+  background: rgba(59,130,246,0.05);
+  border-radius: 4px;
+}
+
+.title-page__written-by {
+  font-size: 12pt;
+  text-align: center;
+  margin-bottom: 0.2em;
+  width: 100%;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: inherit;
+  font-family: inherit;
+  text-align: center;
+  cursor: text;
+}
+
+.title-page__written-by:focus {
+  background: rgba(59,130,246,0.05);
+  border-radius: 4px;
+}
+
+.title-page__authors {
+  font-size: 12pt;
+  text-align: center;
+  margin-bottom: 0.2em;
+  width: 100%;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: inherit;
+  font-family: inherit;
+  text-align: center;
+  cursor: text;
+}
+
+.title-page__authors:focus {
+  background: rgba(59,130,246,0.05);
+  border-radius: 4px;
+}
+
+.title-page__based-on {
+  font-size: 11pt;
+  text-align: center;
+  margin-top: 1em;
+  color: #4b5563;
+  width: 80%;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: inherit;
+  opacity: 0.7;
+  font-family: inherit;
+  text-align: center;
+  cursor: text;
+  resize: none;
+}
+
+.title-page__draft-info {
+  font-size: 11pt;
+  text-align: center;
+  margin-top: 2em;
+  color: #6b7280;
+  width: 100%;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: inherit;
+  opacity: 0.65;
+  font-family: inherit;
+  text-align: center;
+  cursor: text;
+}
+
+.title-page__bottom {
+  position: absolute;
+  bottom: 96px;
+  left: 144px;
+  right: 96px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 16px;
+}
+
+.title-page__contact {
+  font-size: 10pt;
+  white-space: pre-wrap;
+  line-height: 1.4;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: inherit;
+  font-family: inherit;
+  cursor: text;
+  resize: none;
+  min-width: 180px;
+  opacity: 0.75;
+}
+
+.title-page__copyright {
+  font-size: 10pt;
+  text-align: right;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: inherit;
+  font-family: inherit;
+  cursor: text;
+  resize: none;
+  min-width: 160px;
+  opacity: 0.75;
+  text-align: right;
+}
+
+/* Editable field hover/focus styles */
+.title-page input:hover,
+.title-page textarea:hover {
+  background: rgba(59,130,246,0.04);
+  border-radius: 3px;
+}
+
+/* Edit-mode hint label */
+.title-page__field-hint {
+  font-size: 8pt;
+  color: #93c5fd;
+  font-family: var(--font-sans, Arial, sans-serif);
+  margin-top: 2px;
+  opacity: 0;
+  transition: opacity 0.15s;
+  text-align: center;
+  pointer-events: none;
+  letter-spacing: 0.05em;
+}
+
+.title-page__field-wrapper:focus-within .title-page__field-hint {
+  opacity: 1;
+}
+
+/* ============================================================
+   PRINT / PDF EXPORT
+   ============================================================ */
+
+@media print {
+  @page {
+    size: letter;
+    margin: 1in 1in 1in 1.5in;
+  }
+
+  /* Hide all editor chrome */
+  body {
+    background: white !important;
+  }
+
+  header,
+  aside,
+  footer {
+    display: none !important;
+  }
+
+  /* Hide page-number gutter labels */
+  .screenplay-wrap > div > div:first-child {
+    display: none !important;
+  }
+
+  .screenplay-wrap {
+    overflow: visible !important;
+    background: white !important;
+    padding: 0 !important;
+    display: block !important;
+  }
+
+  .screenplay-page {
+    box-shadow: none !important;
+    background: white !important;
+    background-image: none !important;
+    width: auto !important;
+    min-height: 0 !important;
+    padding: 0 !important; /* @page margins provide the spacing */
+    margin: 0 !important;
+  }
+
+  /* Restore element colors to black for print */
+  .screenplay-element,
+  .screenplay-element[data-element-type] {
+    color: black !important;
+  }
+
+  .screenplay-element[data-element-type="act_break"] {
+    border-color: black !important;
+  }
+
+  /* Print title page before script content */
+  .title-page {
+    background: white !important;
+    box-shadow: none !important;
+    color: black !important;
+    padding: 0 !important;
+    width: auto !important;
+    min-height: 0 !important;
+    page-break-after: always;
+  }
+}
