@@ -4,7 +4,6 @@ import { useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import Placeholder from '@tiptap/extension-placeholder';
 import CharacterCount from '@tiptap/extension-character-count';
-import Underline from '@tiptap/extension-underline';
 import Highlight from '@tiptap/extension-highlight';
 import { TextStyle } from '@tiptap/extension-text-style';
 import { Color } from '@tiptap/extension-color';
@@ -100,7 +99,6 @@ export function ScreenplayEditor({
         hardBreak: false,
       }),
       // ── Extra formatting ──
-      Underline,
       TextStyle,
       Color,
       Highlight.configure({ multicolor: true }),

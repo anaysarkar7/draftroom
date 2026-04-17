@@ -169,8 +169,8 @@ export function EditorToolbar({
 
   return (
     <header className="h-12 bg-gray-900 border-b border-gray-800 flex items-center shrink-0 z-30 relative overflow-x-auto scrollbar-hide">
-      {/* Inner scroll container — min-w-max prevents wrapping on small screens */}
-      <div className="flex items-center px-3 sm:px-4 gap-2 sm:gap-3 min-w-max h-full">
+      {/* Inner scroll container — w-full lets flex-1 spacer work on desktop; min-w-max triggers scroll on mobile */}
+      <div className="flex items-center px-3 sm:px-4 gap-2 sm:gap-3 min-w-max w-full h-full">
 
       {/* Back */}
       <Link
