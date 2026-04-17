@@ -156,12 +156,12 @@ export function ScreenplayEditor({
   }, []);
 
   return (
-    <div className="screenplay-wrap flex-1 overflow-y-auto bg-gray-950 flex justify-center py-12 px-4">
-      <div className="relative flex flex-col items-center gap-0">
+    <div className="screenplay-wrap flex-1 overflow-y-auto bg-gray-950 flex justify-center py-4 px-2 md:py-12 md:px-4">
+      <div className="relative flex flex-col items-center gap-0 w-full max-w-[816px]">
 
         {/* ── Title Page (optional) ──────────────────────────────────── */}
         {showTitlePage && titlePageData && onTitlePageChange && (
-          <div className="mb-8">
+          <div className="mb-8 w-full">
             <TitlePageEditor
               data={titlePageData}
               onChange={onTitlePageChange}
@@ -171,11 +171,12 @@ export function ScreenplayEditor({
         )}
 
         {/* ── Script pages ──────────────────────────────────────────── */}
-        <div className="relative">
+        <div className="relative w-full">
+          {/* Page number labels — only show on md+ where margins exist */}
           {Array.from({ length: displayPageCount }, (_, i) => (
             <div
               key={i}
-              className="absolute pointer-events-none select-none"
+              className="absolute pointer-events-none select-none hidden md:block"
               style={{
                 top: `${i * PAGE_HEIGHT_PX + 96}px`,
                 right: 'calc(100% + 14px)',
@@ -191,7 +192,12 @@ export function ScreenplayEditor({
           <div
             ref={pageRef}
             className={cn(
-              'screenplay-page shadow-2xl w-[816px] px-[96px] pt-[96px] pb-[96px] relative',
+              // Mobile: full-width with compact padding
+              // Desktop (md+): fixed 816px with WGA-standard 1in margins
+              'screenplay-page shadow-2xl relative w-full',
+              'px-5 pt-10 pb-10',
+              'sm:px-10 sm:pt-14 sm:pb-14',
+              'md:w-[816px] md:px-[96px] md:pt-[96px] md:pb-[96px]',
               showLineNumbers && 'show-line-numbers',
               showSceneNumbers && 'show-scene-numbers',
               darkMode && 'page-dark'

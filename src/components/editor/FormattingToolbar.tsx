@@ -130,11 +130,11 @@ export function FormattingToolbar({ editor, onAddComment, showCommentBtn = true 
   }, [editor]);
 
   return (
-    <div className="h-9 bg-gray-900 border-b border-gray-800 flex items-center px-4 shrink-0 relative">
+    <div className="h-9 bg-gray-900 border-b border-gray-800 flex items-center shrink-0 relative overflow-x-auto scrollbar-hide">
 
-      {/* ── Centred button group ─────────────────────────────────────── */}
-      <div className="absolute inset-0 flex items-center justify-center gap-0.5 pointer-events-none">
-        <div className="flex items-center gap-0.5 pointer-events-auto">
+      {/* ── Centred button group — scrollable on mobile, centred on desktop ── */}
+      <div className="flex items-center justify-start md:justify-center gap-0.5 px-3 md:px-0 md:absolute md:inset-0 md:pointer-events-none min-w-max md:min-w-0">
+        <div className="flex items-center gap-0.5 md:pointer-events-auto">
 
       {/* ── Bold ─── */}
       {fmtBtn(isBold, () => editor?.chain().focus().toggleBold().run(), 'Bold (⌘B)', <Bold size={13} />)}
@@ -273,11 +273,11 @@ export function FormattingToolbar({ editor, onAddComment, showCommentBtn = true 
         </>
       )}
 
-        </div>{/* end pointer-events-auto */}
+        </div>{/* end inner */}
       </div>{/* end centred group */}
 
-      {/* Hint — pinned right edge, outside the centred block */}
-      <span className="ml-auto text-[10px] text-gray-700 hidden lg:block">
+      {/* Hint — pinned right edge, only on large screens */}
+      <span className="ml-auto text-[10px] text-gray-700 hidden lg:block shrink-0 pr-4 pointer-events-none">
         Select text to format · ⌘B Bold · ⌘I Italic · ⌘U Underline
       </span>
     </div>

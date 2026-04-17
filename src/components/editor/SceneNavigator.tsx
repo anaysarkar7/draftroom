@@ -108,7 +108,9 @@ export function SceneNavigator({ editor, onOpenBreakdown }: SceneNavigatorProps)
     <aside
       className={cn(
         'relative bg-gray-900 border-r border-gray-800 flex flex-col shrink-0 overflow-hidden transition-all duration-200',
-        isOpen ? 'w-56' : 'w-9'
+        // On mobile: fully hidden when collapsed, visible when open
+        // On desktop (md+): collapsed shows as w-9 icon strip
+        isOpen ? 'w-56' : 'w-0 border-r-0 md:w-9 md:border-r'
       )}
     >
       {/* Header — always visible */}

@@ -18,6 +18,7 @@ import { exportScriptAsJSON, exportScriptAsTxt } from '@/lib/script-io';
 import type { Editor } from '@tiptap/core';
 import type { PageStyle, NavScene, SceneBreakdownData, TitlePageData, InlineComment, ElementType } from '@/types/screenplay';
 import { defaultTitlePage } from '@/components/editor/TitlePageEditor';
+import { cn } from '@/lib/utils';
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -283,9 +284,23 @@ export default function EditorClient({ params }: PageProps) {
           onTitlePageChange={handleTitlePageChange}
         />
 
-        {/* Comments panel (right, toggleable) */}
+        {/* Comments panel — sidebar on md+, full-screen overlay on mobile */}
         {showComments && (
-          <aside className="w-64 shrink-0 bg-gray-900 border-l border-gray-800 flex flex-col overflow-hidden">
+          <aside className={cn(
+            'bg-gray-900 border-gray-800 flex flex-col overflow-hidden',
+            // Mobile: fixed overlay sliding from right
+            'fixed inset-y-0 right-0 z-40 w-full max-w-xs border-l shadow-2xl',
+            // Desktop: inline sidebar
+            'md:relative md:inset-auto md:z-auto md:w-64 md:shrink-0 md:shadow-none'
+          )}>
+            {/* Mobile close button */}
+            <button
+              onClick={() => setShowComments(false)}
+              className="md:hidden absolute top-3 right-3 text-gray-500 hover:text-white p-1 rounded hover:bg-gray-700"
+              aria-label="Close notes panel"
+            >
+              ✕
+            </button>
             <CommentsPanel
               editor={editor}
               comments={comments}

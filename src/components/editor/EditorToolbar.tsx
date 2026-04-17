@@ -168,17 +168,20 @@ export function EditorToolbar({
   };
 
   return (
-    <header className="h-12 bg-gray-900 border-b border-gray-800 flex items-center px-4 gap-3 shrink-0 z-30 relative">
+    <header className="h-12 bg-gray-900 border-b border-gray-800 flex items-center shrink-0 z-30 relative overflow-x-auto scrollbar-hide">
+      {/* Inner scroll container — min-w-max prevents wrapping on small screens */}
+      <div className="flex items-center px-3 sm:px-4 gap-2 sm:gap-3 min-w-max h-full">
+
       {/* Back */}
       <Link
         href="/dashboard"
-        className="text-gray-500 hover:text-gray-300 transition-colors"
+        className="text-gray-500 hover:text-gray-300 transition-colors shrink-0"
         title="Back to Dashboard"
       >
         <ArrowLeft size={16} />
       </Link>
 
-      <div className="w-px h-5 bg-gray-800" />
+      <div className="w-px h-5 bg-gray-800 shrink-0" />
 
       {/* Title */}
       {editingTitle ? (
@@ -194,25 +197,25 @@ export function EditorToolbar({
               setEditingTitle(false);
             }
           }}
-          className="bg-gray-800 text-white text-sm font-medium px-2 py-1 rounded border border-gray-600 outline-none focus:border-blue-500 w-48"
+          className="bg-gray-800 text-white text-sm font-medium px-2 py-1 rounded border border-gray-600 outline-none focus:border-blue-500 w-32 sm:w-48"
         />
       ) : (
         <button
           onClick={() => setEditingTitle(true)}
-          className="text-white text-sm font-medium hover:text-gray-200 transition-colors max-w-[200px] truncate"
+          className="text-white text-sm font-medium hover:text-gray-200 transition-colors max-w-[120px] sm:max-w-[200px] truncate shrink-0"
           title="Click to rename"
         >
           {title || 'Untitled Script'}
         </button>
       )}
 
-      {/* Format badge */}
-      <span className="flex items-center gap-1 text-xs text-gray-500 bg-gray-800 px-2 py-0.5 rounded">
+      {/* Format badge — hidden on very small screens */}
+      <span className="hidden sm:flex items-center gap-1 text-xs text-gray-500 bg-gray-800 px-2 py-0.5 rounded shrink-0">
         {FORMAT_ICONS[format]}
         {FORMAT_LABELS[format]}
       </span>
 
-      <div className="flex-1" />
+      <div className="flex-1 min-w-[8px]" />
 
       {/* Auto-save indicator */}
       <span
@@ -531,6 +534,8 @@ export function EditorToolbar({
           </>
         )}
       </div>
+
+      </div>{/* end inner scroll container */}
     </header>
   );
 }

@@ -113,7 +113,7 @@ export function ScriptCard({ script, onDelete }: ScriptCardProps) {
             e.preventDefault();
             setMenuOpen((o) => !o);
           }}
-          className="p-1.5 text-gray-600 hover:text-gray-300 opacity-0 group-hover:opacity-100 transition-all rounded hover:bg-gray-800"
+          className="p-1.5 text-gray-600 hover:text-gray-300 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-all rounded hover:bg-gray-800"
         >
           <MoreVertical size={14} />
         </button>

@@ -46,7 +46,7 @@ export function StatusBar({ editor, pageCount }: StatusBarProps) {
   }, [editor]);
 
   return (
-    <footer className="h-8 bg-gray-900 border-t border-gray-800 flex items-center px-4 gap-4 text-xs text-gray-500 shrink-0">
+    <footer className="h-8 bg-gray-900 border-t border-gray-800 flex items-center px-3 sm:px-4 gap-3 sm:gap-4 text-xs text-gray-500 shrink-0">
       {/* Element type indicator */}
       <div className="flex items-center gap-1.5">
         <span className={cn('w-2 h-2 rounded-full', TYPE_COLORS[elementType])} />

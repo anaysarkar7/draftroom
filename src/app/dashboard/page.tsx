@@ -138,41 +138,39 @@ export default function DashboardPage() {
 
       {/* Top bar */}
       <header className="border-b border-gray-800 bg-gray-950/80 backdrop-blur-md sticky top-0 z-10">
-        <div className="max-w-6xl mx-auto px-6 h-14 flex items-center gap-4">
-          <Link href="/" className="flex items-center gap-2 mr-4">
+        <div className="max-w-6xl mx-auto px-3 sm:px-6 h-14 flex items-center gap-2 sm:gap-4">
+          <Link href="/" className="flex items-center gap-1.5 sm:gap-2 mr-1 sm:mr-4 shrink-0">
             <Image src="/logo.svg" alt="DraftRoom" width={20} height={20} />
-            <span className="font-bold text-white text-sm">DraftRoom</span>
+            <span className="font-bold text-white text-sm hidden xs:inline sm:inline">DraftRoom</span>
           </Link>
 
           {/* Search */}
-          <div className="relative flex-1 max-w-xs">
+          <div className="relative flex-1 min-w-0">
             <Search size={13} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" />
             <input
               type="text"
-              placeholder="Search scripts…"
+              placeholder="Search…"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               className="w-full bg-gray-900 border border-gray-800 text-white text-sm rounded-lg pl-8 pr-3 py-1.5 outline-none focus:border-gray-600 transition-colors placeholder:text-gray-600"
             />
           </div>
 
-          <div className="flex-1" />
-
           {/* ── Import split-button ─────────────────────────────────────── */}
-          <div className="relative">
+          <div className="relative shrink-0">
             {/* Main label (clicking opens the menu) */}
             <button
               onClick={() => setImportMenuOpen((o) => !o)}
               disabled={importing}
               className={cn(
-                'flex items-center gap-2 text-sm font-medium px-4 py-1.5 rounded-lg transition-colors border',
+                'flex items-center gap-1.5 text-sm font-medium px-2.5 sm:px-4 py-1.5 rounded-lg transition-colors border',
                 'bg-gray-800 hover:bg-gray-700 text-gray-300 hover:text-white border-gray-700',
                 importing && 'opacity-60 cursor-wait'
               )}
               title="Import a script"
             >
               <Upload size={14} />
-              {importing ? 'Importing…' : 'Import'}
+              <span className="hidden sm:inline">{importing ? 'Importing…' : 'Import'}</span>
               <ChevronDown size={12} className={cn('opacity-60 transition-transform', importMenuOpen && 'rotate-180')} />
             </button>
 
@@ -212,15 +210,15 @@ export default function DashboardPage() {
             )}
           </div>
 
-          <ReportIssueButton variant="full" />
+          <ReportIssueButton variant="icon" className="hidden sm:flex" />
 
           {/* New Script */}
           <button
             onClick={() => setShowModal(true)}
-            className="flex items-center gap-2 bg-blue-600 hover:bg-blue-500 text-white text-sm font-medium px-4 py-1.5 rounded-lg transition-colors"
+            className="flex items-center gap-1.5 bg-blue-600 hover:bg-blue-500 text-white text-sm font-medium px-2.5 sm:px-4 py-1.5 rounded-lg transition-colors shrink-0"
           >
             <Plus size={15} />
-            New Script
+            <span className="hidden sm:inline">New Script</span>
           </button>
         </div>
       </header>
@@ -242,7 +240,7 @@ export default function DashboardPage() {
       )}
 
       {/* Content */}
-      <main className="max-w-6xl mx-auto px-6 py-10">
+      <main className="max-w-6xl mx-auto px-3 sm:px-6 py-6 sm:py-10">
         {scripts.length === 0 ? (
           /* Empty state */
           <div className="flex flex-col items-center justify-center py-28 text-center">
