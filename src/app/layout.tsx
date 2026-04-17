@@ -22,6 +22,11 @@ export const metadata: Metadata = {
   title: "DraftRoom — The Screenwriter's Studio",
   description:
     "A focused, industry-standard scriptwriting tool for screenwriters, TV writers, and playwrights.",
+  icons: {
+    icon: "/logo.svg",
+    shortcut: "/logo.svg",
+    apple: "/logo.svg",
+  },
 };
 
 export default function RootLayout({

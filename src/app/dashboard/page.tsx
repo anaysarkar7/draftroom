@@ -4,7 +4,7 @@ import { useState, useRef, useCallback } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import {
-  Plus, PenSquare, Search, Upload, AlertCircle,
+  Plus, Search, Upload, AlertCircle,
   ChevronDown, FileJson, FileCode2,
 } from 'lucide-react';
 import { useScriptStore } from '@/store/scriptStore';
@@ -14,6 +14,8 @@ import { parseImportedJSON } from '@/lib/script-io';
 import { parseFdx } from '@/lib/fdx-import';
 import type { ScriptFormat } from '@/types/screenplay';
 import { cn } from '@/lib/utils';
+import { ReportIssueButton } from '@/components/ReportIssueButton';
+import Image from 'next/image';
 
 export default function DashboardPage() {
   const router = useRouter();
@@ -138,7 +140,7 @@ export default function DashboardPage() {
       <header className="border-b border-gray-800 bg-gray-950/80 backdrop-blur-md sticky top-0 z-10">
         <div className="max-w-6xl mx-auto px-6 h-14 flex items-center gap-4">
           <Link href="/" className="flex items-center gap-2 mr-4">
-            <PenSquare size={18} className="text-blue-400" />
+            <Image src="/logo.svg" alt="DraftRoom" width={20} height={20} />
             <span className="font-bold text-white text-sm">DraftRoom</span>
           </Link>
 
@@ -210,6 +212,8 @@ export default function DashboardPage() {
             )}
           </div>
 
+          <ReportIssueButton variant="full" />
+
           {/* New Script */}
           <button
             onClick={() => setShowModal(true)}
@@ -243,7 +247,7 @@ export default function DashboardPage() {
           /* Empty state */
           <div className="flex flex-col items-center justify-center py-28 text-center">
             <div className="w-16 h-16 rounded-2xl bg-gray-900 border border-gray-800 flex items-center justify-center mb-5">
-              <PenSquare size={28} className="text-gray-600" />
+              <Image src="/logo.svg" alt="DraftRoom" width={32} height={32} className="opacity-40" />
             </div>
             <h2 className="text-xl font-semibold text-white mb-2">No scripts yet</h2>
             <p className="text-gray-500 text-sm mb-8 max-w-xs">

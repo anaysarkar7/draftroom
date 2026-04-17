@@ -2,6 +2,7 @@
 
 import { useCallback, useState, useEffect } from 'react';
 import Link from 'next/link';
+import { ReportIssueButton } from '@/components/ReportIssueButton';
 import {
   ChevronDown,
   Download,
@@ -471,6 +472,9 @@ export function EditorToolbar({
         <Search size={13} />
         <span className="hidden sm:inline">Find</span>
       </button>
+
+      {/* ── Report Issue ──────────────────────────────────────────── */}
+      <ReportIssueButton variant="icon" />
 
       {/* ── Export dropdown ───────────────────────────────────────── */}
       <div className="relative">

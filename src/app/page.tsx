@@ -1,6 +1,6 @@
 import Link from "next/link";
+import Image from "next/image";
 import {
-  PenSquare,
   Film,
   Tv,
   Theater,
@@ -190,7 +190,7 @@ export default function LandingPage() {
       <nav className="border-b border-gray-800/60 bg-gray-950/90 backdrop-blur-md sticky top-0 z-10">
         <div className="max-w-6xl mx-auto px-6 h-14 flex items-center gap-6">
           <div className="flex items-center gap-2">
-            <PenSquare size={18} className="text-blue-400" />
+            <Image src="/logo.svg" alt="DraftRoom" width={22} height={22} />
             <span className="font-bold text-white">DraftRoom</span>
           </div>
 
@@ -203,7 +203,7 @@ export default function LandingPage() {
 
           <div className="flex items-center gap-3">
             <a
-              href="https://github.com"
+              href="https://github.com/anaysarkar7/draftroom"
               target="_blank"
               rel="noopener noreferrer"
               className="hidden sm:flex items-center gap-1.5 text-xs text-gray-400 hover:text-white transition-colors px-3 py-1.5 rounded-lg border border-gray-800 hover:border-gray-700 bg-gray-900"
@@ -253,7 +253,7 @@ export default function LandingPage() {
             <ArrowRight size={16} />
           </Link>
           <a
-            href="https://github.com"
+            href="https://github.com/anaysarkar7/draftroom"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center justify-center gap-2 border border-gray-700 hover:border-gray-600 text-gray-300 hover:text-white font-medium px-8 py-3.5 rounded-xl text-sm transition-colors bg-gray-900"
@@ -483,7 +483,7 @@ export default function LandingPage() {
 
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <a
-                href="https://github.com"
+                href="https://github.com/anaysarkar7/draftroom"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center justify-center gap-2 bg-white/10 hover:bg-white/15 border border-white/10 text-white font-medium px-7 py-3 rounded-xl text-sm transition-all"
@@ -562,12 +562,12 @@ export default function LandingPage() {
         <div className="max-w-6xl mx-auto px-6">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-6">
             <div className="flex items-center gap-2">
-              <PenSquare size={14} className="text-blue-400" />
+              <Image src="/logo.svg" alt="DraftRoom" width={16} height={16} />
               <span className="font-bold text-white text-sm">DraftRoom</span>
               <span className="text-gray-600 text-xs ml-1">— The screenwriter&apos;s studio</span>
             </div>
             <div className="flex items-center gap-4">
-              <a href="https://github.com" target="_blank" rel="noopener noreferrer"
+              <a href="https://github.com/anaysarkar7/draftroom" target="_blank" rel="noopener noreferrer"
                 className="flex items-center gap-1.5 text-xs text-gray-600 hover:text-gray-400 transition-colors">
                 <GithubIcon size={12} /> GitHub
               </a>
