@@ -69,7 +69,7 @@ export function ScriptCard({ script, onDelete }: ScriptCardProps) {
   };
 
   return (
-    <div className="group relative bg-gray-900 border border-gray-800 rounded-xl overflow-hidden hover:border-gray-700 transition-all hover:shadow-lg hover:shadow-black/20">
+    <div className="group relative bg-gray-900 border border-gray-800 rounded-xl hover:border-gray-700 transition-all hover:shadow-lg hover:shadow-black/20">
       {/* Card header - clickable */}
       <Link href={`/editor/${script.id}`} className="block p-5">
         {/* Format badge */}
